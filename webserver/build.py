@@ -14,7 +14,7 @@ app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
 # change this so that you can connect to your redis server
 # ===============================================
-redis_server = redis.Redis("REDIS_SERVER", decode_responses=True, charset="unicode_escape")
+redis_server = redis.Redis('localhost' 'port'=6379, decode_responses=True, charset="unicode_escape")
 # ===============================================
 
 # Translate OSM coordinate (longitude, latitude) to SVG coordinates (x,y).
@@ -50,8 +50,26 @@ def get_drones():
     #               'DRONE_2': {'longitude': drone2_logitude_svg, 'latitude': drone2_logitude_svg, 'status': drone2_status}
     #              }
     # use function translate() to covert the coodirnates to svg coordinates
+    #drone1 = redis_server.get('Drone_1')
+    #d1lat = translate(drone1.get('latitude'))
+    #d1long = translate(drone1.get('longitude'))
+    #drone2 = redis_server.get('Drone_2')
+    #d2lat = translate(drone2.get('latitude'))
+    #d2long = translate(drone2.get('longitude'))
+
     #=============================================================================================================================================
+    #drone_dict = {'DRONE_1':{'longitude': d1long, 'latitude': d1lat, 'status': drone1_status},
+    #             'DRONE_2': {'longitude': d2long, 'latitude': d2lat, 'status': drone2_status}
     drone_dict = {}
+        all_drone_data = redis_server.hgetall("DRONE_DATA")
+        for drone_id, drone_data in all_drone_data.items():
+            drone_data = json.loads(drone_data)
+            longitude = drone_data['longitude']
+            latitude = drone_data['latitude']
+            status = drone_data['status']
+            svg_coordinates = translate((longitude, latitude))
+            drone_dict[drone_id] = {'longitude': svg_coordinates[0], 'latitude': svg_coordinates[1], 'status': status}
+        return jsonify(drone_dict)
     return jsonify(drone_dict)
 
 if __name__ == "__main__":
