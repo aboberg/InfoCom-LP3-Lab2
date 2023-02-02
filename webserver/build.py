@@ -61,15 +61,15 @@ def get_drones():
     #drone_dict = {'DRONE_1':{'longitude': d1long, 'latitude': d1lat, 'status': drone1_status},
     #             'DRONE_2': {'longitude': d2long, 'latitude': d2lat, 'status': drone2_status}
     drone_dict = {}
-        all_drone_data = redis_server.hgetall("DRONE_DATA")
-        for drone_id, drone_data in all_drone_data.items():
-            drone_data = json.loads(drone_data)
-            longitude = drone_data['longitude']
-            latitude = drone_data['latitude']
-            status = drone_data['status']
-            svg_coordinates = translate((longitude, latitude))
-            drone_dict[drone_id] = {'longitude': svg_coordinates[0], 'latitude': svg_coordinates[1], 'status': status}
-        return jsonify(drone_dict)
+    drone_ids = redis_server.lrange("DRONE_IDS_LIST", 0, -1)
+
+    for drone_id in drone_ids:
+        drone_status = redis_server.get(f"DRONE_{drone_id}_STATUS")
+        drone_longitude = float(redis_server.get(f"DRONE_{drone_id}_LONGITUDE"))
+        drone_latitude = float(redis_server.get(f"DRONE_{drone_id}_LATITUDE"))
+        x, y = translate((drone_longitude, drone_latitude))
+        drone_dict[drone_id] = {'longitude': x, 'latitude': y, 'status': drone_status}
+
     return jsonify(drone_dict)
 
 if __name__ == "__main__":
