@@ -3,11 +3,9 @@ from flask_cors import CORS
 import subprocess
 import  requests
 
-
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
-
 
 #Give a unique ID for the drone
 #===================================================================

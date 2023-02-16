@@ -53,7 +53,6 @@ if __name__ == "__main__":
     #===================================================================
     SERVER_URL = "http://SERVER_IP:PORT/drone"
     #===================================================================
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--clong", help='current longitude of drone location' ,type=float)
     parser.add_argument("--clat", help='current latitude of drone location',type=float)
