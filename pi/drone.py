@@ -11,13 +11,16 @@ app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
 
 #Give a unique ID for the drone
 #===================================================================
-myID = "DRONE_ID"
+myID = "2"
 #===================================================================
 
 # Get initial longitude and latitude the drone
 #===================================================================
-current_longitude = 0
-current_latitude = 0
+current_longitude = 13.21008
+current_latitude = 55.71106
+file = open('coords.txt','w')
+file.write(str(current_longitude) + "\n" + str((current_latitude)
+file.close()
 #===================================================================
 
 drone_info = {'id': myID,
@@ -36,10 +39,13 @@ with requests.Session() as session:
 @app.route('/', methods=['POST'])
 def main():
     coords = request.json
-    # Get current longitude and latitude of the drone 
+    print(coords)
+    # Get current longitude and latitude of the drone
     #===================================================================
-    current_longitude = 0
-    current_latitude = 0
+    file = open('coords.txt', r')
+    current_longitude = float(file.readline())
+    current_latitude = float(file.readline())
+    file.close()
     #===================================================================
     from_coord = coords['from']
     to_coord = coords['to']

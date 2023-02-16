@@ -70,5 +70,9 @@ if __name__ == "__main__":
 
     print(current_coords, from_coords, to_coords)
     drone_long, drone_lat = run(args.id ,current_coords, from_coords, to_coords, SERVER_URL)
+    file = open('coords.txt', 'w')
+    file.write(str(drone_long + "\n" + str(drone_lat))
+    file.close()
+    print("hej" + drone_long, drone_lat)
     # drone_long and drone_lat is the final location when drlivery is completed, find a way save the value, and use it for the initial coordinates of next delivery
     #=============================================================================
